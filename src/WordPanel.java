@@ -49,8 +49,9 @@ public class WordPanel extends JPanel implements Runnable {
 			WordRecord word =words[wordsI.get()];
 			wordsI.getAndIncrement();
 			while(!WordApp.done){
-				System.out.println("here " + word.getWord());
+				//System.out.println("here " + word.getWord());
 				word.drop(10);
+
 				try{Thread.sleep(word.getSpeed());
 				}
 				catch(InterruptedException e){
@@ -63,6 +64,9 @@ public class WordPanel extends JPanel implements Runnable {
 					WordApp.updateGUI();
 				}
 			}
+			word.resetWord();
+			wordsI.getAndSet(0);
+			
 				
 		}
 		public static synchronized void updateGUI(){

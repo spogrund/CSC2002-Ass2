@@ -109,7 +109,7 @@ public class WordApp {
 		      startB.setEnabled(false);
 		      updateGUI();
 		      Thread wThread;
-		      
+
 		      for(int i = 0; i<noWords; i++){
 		      	wThread = new Thread(w);
 		      	wThread.start();
@@ -131,7 +131,7 @@ public class WordApp {
 		      //[snip]
 		      done = true;
 		      startB.setEnabled(true);
-		      
+		      w.done=true;
 		      score.resetScore();
 		      updateGUI();
 		      
@@ -175,7 +175,7 @@ public class WordApp {
 	}
 
 	public static void main(String[] args) {
-    	
+    		System.setProperty("sun.java2d.opengl","true");
 		//deal with command line arguments
 		totalWords=Integer.parseInt(args[0]);  //total words to fall
 		noWords=Integer.parseInt(args[1]); // total words falling at any point
@@ -200,4 +200,6 @@ public class WordApp {
 			words[i]=new WordRecord(dict.getNewWord(),i*x_inc,yLimit);
 		}
 	}
+	
+	
 }
