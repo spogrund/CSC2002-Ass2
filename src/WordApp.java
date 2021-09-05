@@ -1,5 +1,9 @@
 //package skeletonCodeAssgnmt2;
-
+/**
+*CSC2002S Assignment 2
+*PGRSAM001
+*2021
+**/
 import javax.swing.*;
 
 import java.awt.*;
@@ -32,8 +36,11 @@ public class WordApp {
 	static JLabel caught;
 	static JLabel missed;
 	static JLabel scr;
+    static JButton startB;
 	
-	
+	/**
+   *method to add everything and set up the graphic user interface
+   */
 	public static void setupGUI(int frameX,int frameY,int yLimit) {
 		// Frame init and dimensions
     	JFrame frame = new JFrame("WordGame"); 
@@ -57,7 +64,7 @@ public class WordApp {
 	   txt.add(scr);
     
 	    //[snip]
-	    JButton quitB = new JButton("Quit");;
+	    JButton quitB = new JButton("Quit");;//added a quit button that exits the application
 		
 			// add the listener to the jbutton to handle the "pressed" event
 		quitB.addActionListener(new ActionListener()
@@ -72,15 +79,22 @@ public class WordApp {
 	   final JTextField textEntry = new JTextField("",20);
 	   textEntry.addActionListener(new ActionListener()
 	   {
-	      public void actionPerformed(ActionEvent evt) {
+	      public void actionPerformed(ActionEvent evt) { //added an event on the text being entered to check for a matching word and to update scores if necessary.
 	         String text = textEntry.getText();
 	          //[snip]
-	          for(WordRecord word : words){
+	          for(WordRecord word : words)
 	          	if (word.matchWord(text)){
 	          		score.caughtWord(text.length());
 	          		if (score.getTotal() != totalWords){
 	          			word.resetWord();
 	          		}
+                  else{
+                     
+                  done = true;
+                  endGame(); //if total words have been reaced end the game.
+                  break;
+
+                  }
 	          		updateGUI();
 	          		break;
 	          		
@@ -97,7 +111,7 @@ public class WordApp {
 	    
 	   JPanel b = new JPanel();
       b.setLayout(new BoxLayout(b, BoxLayout.LINE_AXIS)); 
-	   JButton startB = new JButton("Start");;
+	   startB = new JButton("Start");;
 		
 			// add the listener to the jbutton to handle the "pressed" event
 		startB.addActionListener(new ActionListener()
@@ -110,9 +124,9 @@ public class WordApp {
 		      updateGUI();
 		      Thread wThread;
 
-		      for(int i = 0; i<noWords; i++){
-		      	wThread = new Thread(w);
-		      	wThread.start();
+		      for(int i = 0; i<noWords; i++){//for however many words are onscreen create a thread of a wordpanel so each word has its own thread
+		      	wThread = new Thread(w);//wordPanel w is the shared resource in this situation
+		      	wThread.start();//wordpanel has a run so that when start is called, it runs that function to drop the words an apply neccessary functions
 		      	try{
 		      		Thread.sleep(1);
 		      	}
@@ -129,11 +143,7 @@ public class WordApp {
 		   public void actionPerformed(ActionEvent e)
 		   {
 		      //[snip]
-		      done = true;
-		      startB.setEnabled(true);
-		      w.done=true;
-		      score.resetScore();
-		      updateGUI();
+		      endGame();
 		      
 		   }
 		});
@@ -149,12 +159,18 @@ public class WordApp {
        	//frame.pack();  // don't do this - packs it into small space
       frame.setVisible(true);
 	}
+   /**
+   *updates the scores after functions that might affect the scores
+   */
 	public static synchronized void updateGUI(){
 		caught.setText("Caught: " + score.getCaught());
 		missed.setText("Missed: " + score.getMissed());
 		scr.setText("Score: " + score.getScore());
 	}
-
+   /**
+   *populates an array with words from an input file, if no input file is found it uses a default dictionary;
+   *@return array of words for use in game
+   */
    public static String[] getDictFromFile(String filename) {
 		String [] dictStr = null;
 		try {
@@ -173,7 +189,22 @@ public class WordApp {
 	    }
 		return dictStr;
 	}
-
+   
+   /**
+   *method for ending the game that displays a summary message of scores and resets the game.
+   */
+   public static void endGame(){
+      done = true;
+      JOptionPane.showMessageDialog(null, "GAME OVER: you scored: " + score.getScore() + "\n you caught " + score.getCaught() + " words \n"+
+         "you missed " + score.getMissed() + " words.\n Press start to play again.");
+      startB.setEnabled(true);
+		score.resetScore();
+		updateGUI();
+      
+   }
+   /**
+   *main method that sets everything up and gets everything ready for the game to begin
+   */
 	public static void main(String[] args) {
     		System.setProperty("sun.java2d.opengl","true");
 		//deal with command line arguments

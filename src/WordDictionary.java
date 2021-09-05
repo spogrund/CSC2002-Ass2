@@ -1,5 +1,9 @@
 //package skeletonCodeAssgnmt2;
-
+/**
+*CSC2002S Assignment 2
+*PGRSAM001
+*2021
+**/
 public class WordDictionary {
 	int size;
 	static String [] theDict= {"litchi","banana","apple","mango","pear","orange","strawberry",
