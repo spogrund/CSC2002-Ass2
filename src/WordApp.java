@@ -1,9 +1,5 @@
 //package skeletonCodeAssgnmt2;
-/**
-*CSC2002S Assignment 2
-*PGRSAM001
-*2021
-**/
+
 import javax.swing.*;
 
 import java.awt.*;
@@ -16,7 +12,11 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.concurrent.*;
 //model is separate from the view.
-
+/**
+*CSC2002S Assignment 2
+*PGRSAM001
+*2021
+*/
 public class WordApp {
 //shared variables
 	static int noWords=4;
@@ -37,11 +37,11 @@ public class WordApp {
 	static JLabel missed;
 	static JLabel scr;
     static JButton startB;
-	
 	/**
    *method to add everything and set up the graphic user interface
    */
-	public static void setupGUI(int frameX,int frameY,int yLimit) {
+
+		public static void setupGUI(int frameX,int frameY,int yLimit) {
 		// Frame init and dimensions
     	JFrame frame = new JFrame("WordGame"); 
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,8 +64,7 @@ public class WordApp {
 	   txt.add(scr);
     
 	    //[snip]
-	    JButton quitB = new JButton("Quit");;//added a quit button that exits the application
-		
+	    JButton quitB = new JButton("Quit");;		
 			// add the listener to the jbutton to handle the "pressed" event
 		quitB.addActionListener(new ActionListener()
 		{
@@ -75,14 +74,16 @@ public class WordApp {
 		      System.exit(0);
 		   }
 		});
-  
+      
 	   final JTextField textEntry = new JTextField("",20);
 	   textEntry.addActionListener(new ActionListener()
 	   {
-	      public void actionPerformed(ActionEvent evt) { //added an event on the text being entered to check for a matching word and to update scores if necessary.
-	         String text = textEntry.getText();
+
+	      public void actionPerformed(ActionEvent event) { 
+             String text = textEntry.getText();
 	          //[snip]
-	          for(WordRecord word : words)
+
+	          for(WordRecord word : words){
 	          	if (word.matchWord(text)){
 	          		score.caughtWord(text.length());
 	          		if (score.getTotal() != totalWords){
@@ -91,7 +92,7 @@ public class WordApp {
                   else{
                      
                   done = true;
-                  endGame(); //if total words have been reaced end the game.
+                  endGame(); 
                   break;
 
                   }
@@ -123,9 +124,10 @@ public class WordApp {
 		      startB.setEnabled(false);
 		      updateGUI();
 		      Thread wThread;
+            //for however many words are onscreen create a thread of a wordpanel so each word has its own thread
 
-		      for(int i = 0; i<noWords; i++){//for however many words are onscreen create a thread of a wordpanel so each word has its own thread
-		      	wThread = new Thread(w);//wordPanel w is the shared resource in this situation
+		      for(int i = 0; i<noWords; i++){
+              	wThread = new Thread(w);//wordPanel w is the shared resource in this situation
 		      	wThread.start();//wordpanel has a run so that when start is called, it runs that function to drop the words an apply neccessary functions
 		      	try{
 		      		Thread.sleep(1);
